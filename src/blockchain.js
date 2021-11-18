@@ -129,6 +129,18 @@ class Blockchain {
     submitStar(address, message, signature, star) {
         let self = this;
         return new Promise(async (resolve, reject) => {
+            let addressTime = parseInt(message.split(':')[1]);
+            let currentTime = parseInt(new Date().getTime().toString().slice(0, -3));
+
+            if ((currentTime - addressTime) < 5){
+               bitcoinMessage.verify(message, address, signature);
+               let anotherBlock = BlockClass.Block({data:star});
+               self._addBlock(anotherBlock)
+
+               resolve(anotherBlock)
+            }else{
+                reject(new Error("The block was not created "))
+            }
 
         });
     }
@@ -142,7 +154,14 @@ class Blockchain {
     getBlockByHash(hash) {
         let self = this;
         return new Promise((resolve, reject) => {
+             self.chain.filter((element) => {
+                if (element.hash === hash){
+                  resolve(element);
+                } else (
+                    reject("there is no block with that hash on the block chain")
+                )
 
+             })
         });
     }
 
