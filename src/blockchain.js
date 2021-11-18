@@ -134,7 +134,7 @@ class Blockchain {
 
             if ((currentTime - addressTime) < 5){
                bitcoinMessage.verify(message, address, signature);
-               let anotherBlock = BlockClass.Block({data:star});
+               let anotherBlock = BlockClass.Block(star);
                self._addBlock(anotherBlock)
 
                resolve(anotherBlock)
@@ -206,6 +206,16 @@ class Blockchain {
         let self = this;
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
+          let validation =  self.chain.forEach((element) => {
+                  let results = element.BlockClass.validate()
+                  return results
+            })
+
+            if (validation === true){
+                resolve("validated")
+            }else{
+                reject(new Error())
+            }
 
         });
     }
