@@ -69,7 +69,6 @@ class Blockchain {
                 block.height = 0
                 self.height = self.height + 1
                 block.hash = SHA256(JSON.stringify(block.data)).toString()
-
                 self.chain.push(block)
                resolve(block)
              
@@ -78,6 +77,7 @@ class Blockchain {
                   block.time = new Date().getTime().toString().slice(0,-3)
                   block.height = self.chain.length
                   self.height = self.height + 1
+                  block.hash = SHA256(JSON.stringify(block.data)).toString()
                   self.chain.push(block)
 
                   resolve(block)
