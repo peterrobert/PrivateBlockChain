@@ -101,7 +101,7 @@ class Blockchain {
     requestMessageOwnershipVerification(address) {
         return new Promise((resolve, reject) => {
             if(address !== null ){
-               resolve(`<address>:${new Date().getTime().toString().slice(0,-3)}:starRegistry`)
+               resolve(`${address}:${new Date().getTime().toString().slice(0,-3)}:starRegistry`)
             }else{
                 reject("Please provide a wallet address")
             }
