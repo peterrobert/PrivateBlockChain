@@ -8,7 +8,6 @@
  *  All the exposed methods should return a Promise to allow all the methods 
  *  run asynchronous.
  */
-
 const SHA256 = require('crypto-js/sha256');
 const hex2ascii = require('hex2ascii');
 
@@ -22,7 +21,6 @@ class Block {
 		this.time = 0;                                              // Timestamp for the Block creation
 		this.previousBlockHash = null;                              // Reference to the previous Block Hash
     }
-    
     /**
      *  validate() method will validate if the block has been tampered or not.
      *  Been tampered means that someone from outside the application tried to change
@@ -37,22 +35,22 @@ class Block {
      */
     validate() {
         let self = this;
+        let newBlock = {...self}
         return new Promise((resolve, reject) => {
             // Save in auxiliary variable the current block hash
-            let currentHash = self.hash;                            
-            // Recalculate the hash of the Block
+            let currentHash = newBlock.hash;                            
+            // == decode the body for the actual data;
+            const data =  JSON.parse(hex2ascii(newBlock.body))  
+           // Recalculate the hash of the Block
             let hashRecalculated = SHA256(JSON.stringify(data)).toString();
             // Comparing if the hashes changed
             if(currentHash === hashRecalculated){
-
                 resolve(true)
-
             }else{
                  reject(false)
             }
         });
     }
-
     /**
      *  Auxiliary Method to return the block body (decoding the data)
      *  Steps:
